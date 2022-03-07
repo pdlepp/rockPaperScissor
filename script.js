@@ -4,35 +4,38 @@ function computerPlay(){
     return test;
 }
 
-function playerSelection(){
-    let test = prompt('Rock, Paper, Scissor');//ask the user to make a choice
-    let selection;
-    if(test.toLowerCase() == "rock"){ 
-        selection = 0;
-    }
-    else if (test.toLowerCase() == "paper"){
-        selection = 1;
-    }
-    else if (test.toLowerCase() == "scissor"){
-        selection = 2;
-    }
-    return selection; //return user selection
+function playerSelection(selection){    
+    game(selection); //return user selection
+}
+
+function increaseTotal(increaseNumber){
+    let temp = document.getElementById(increaseNumber).innerHTML;
+    document.getElementById(increaseNumber).innerHTML = ++temp;
 }
 
 function playRound(playerSelection, computerSelection) {
     let choices = ["Rock", "Paper", "Scissor"];
     if(playerSelection === computerSelection) {
-        console.log("Tie!");
+        document.getElementById("currentResults").innerHTML = "Tie!";
+        increaseTotal("totalGames");
         return 0;
     }
     else if(playerSelection === 1 && computerSelection === 0 || playerSelection === 2 && computerSelection === 1 || 
         playerSelection === 0 && computerSelection === 2){
-        console.log("You win! " + choices[playerSelection] + " beats " + choices[computerSelection]);
+        document.getElementById("currentResults").innerHTML =
+        "You win! " + choices[playerSelection] + " beats " + 
+        choices[computerSelection];
+        increaseTotal("totalGames");
+        increaseTotal("playerResults");
         return 2;
     }
     else if(playerSelection === 0 && computerSelection === 1 || playerSelection === 1 && computerSelection === 2 || 
         playerSelection === 2 && computerSelection === 0){
-        console.log("You lose! " + choices[computerSelection] + " beats " + choices[playerSelection]);
+        document.getElementById("currentResults").innerHTML = 
+        "You lose! " + choices[computerSelection] + " beats " + 
+        choices[playerSelection];
+        increaseTotal("totalGames");
+        increaseTotal("computerResults");
         return 1;
     } else{
         console.log("error!");
@@ -40,12 +43,23 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-function game(){
-    for(let i = 0; i < 5; i++){
-        let computerInput = computerPlay();
-        let playerInput = playerSelection();
-        playRound(playerInput, computerInput);
-    }
+function game(playerInput){
+    let computerInput = computerPlay();
+    playRound(playerInput, computerInput);   
 }
 
-game();
+let rockButton = document.querySelector("rockBtn");
+rockBtn.addEventListener('click', () => {
+    playerSelection(0);
+});
+
+let paperButton = document.querySelector("rockBtn");
+paperBtn.addEventListener('click', () => {
+    playerSelection(1);
+});
+
+let scissorButton = document.querySelector("rockBtn");
+scissorBtn.addEventListener('click', () => {
+    playerSelection(2);
+});
+
